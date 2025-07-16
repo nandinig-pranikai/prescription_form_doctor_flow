@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prescription Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='prescription_css.css') }}">
+</head>
+<body>
+
+  <div class="brand-badge">pranik.ai</div>
+
+  <div class="container">
+    <h2>Prescription Form</h2>
+
+    <form id="prescriptionForm">
+      <div class="form-section">
+        <label for="patientId">Select Patient:</label>
+        <select id="patientId" name="patientId" required>
+          <option value="">-- Select Patient --</option>
+          <option value="123">Jane Doe (ID: 123)</option>
+          <option value="124">John Smith (ID: 124)</option>
+        </select>
+      </div>
+
+      <div id="medications">
+        <div class="medication-group">
+          <h4>Medication 1</h4>
+          <label for="drug_1">Drug Name:</label>
+          <div class="autocomplete-container">
+            <input type="text" id="drug_1" name="drug[]" class="autocomplete-input" required autocomplete="off">
+            <div class="autocomplete-suggestions"></div>
+          </div>
+
+          <label for="dosage_1">Dosage (e.g. 500mg):</label>
+          <input type="text" id="dosage_1" name="dosage[]" required>
+
+          <label for="frequency_1">Frequency (e.g. twice a day):</label>
+          <input type="text" id="frequency_1" name="frequency[]" required>
+
+          <label for="duration_1">Duration (e.g. 7 days):</label>
+          <input type="text" id="duration_1" name="duration[]" required>
+
+          <label>Before or After Food:</label>
+          <div class="radio-group">
+            <input type="radio" id="before_food_1" name="food_timing_1" value="before" required>
+            <label for="before_food_1">Before Food</label>
+            <input type="radio" id="after_food_1" name="food_timing_1" value="after">
+            <label for="after_food_1">After Food</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Lab Work</h4>
+        <label for="lab_work_list">Please list all required lab tests below:</label>
+        <textarea id="lab_work_list" name="lab_work_list" rows="5"></textarea>
+      </div>
+
+      <div class="form-section">
+        <label for="notes">Additional Instructions / Notes:</label>
+        <textarea id="notes" name="notes" rows="4"></textarea>
+      </div>
+
+      <div class="form-section">
+        <label for="doctorName">Doctor's Name:</label>
+        <input type="text" id="doctorName" name="doctorName" required>
+
+        <label for="medID">MedID:</label>
+        <input type="text" id="medID" name="medID" required>
+      </div>
+
+      <div class="form-section">
+        <label for="date">Date Issued:</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <div class="button-group">
+        <button type="button" onclick="addMedication()">+ Add Another Medication</button>
+        <button type="submit">Submit Prescription</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    window.onload = function () {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
+    };
+
+    function attachAutocomplete(input, suggestionBox) {
+      input.addEventListener("input", async () => {
+        const term = input.value;
+        if (term.length < 2) {
+          suggestionBox.innerHTML = "";
+          return;
+        }
+
+        try {
+          const res = await fetch(`/autocomplete?term=${term}`);
+          const suggestions = await res.json();
+
+          suggestionBox.innerHTML = "";
+          suggestions.forEach(suggestion => {
+            const div = document.createElement("div");
+            div.classList.add("suggestion-item");
+            div.textContent = suggestion;
+            div.onclick = () => {
+              input.value = suggestion;
+              suggestionBox.innerHTML = "";
+            };
+            suggestionBox.appendChild(div);
+          });
+        } catch (err) {
+          console.error("Autocomplete failed", err);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const input = document.querySelector(".autocomplete-input");
+      const suggestionBox = document.querySelector(".autocomplete-suggestions");
+      attachAutocomplete(input, suggestionBox);
+    });
+
+    let medCount = 1;
+    function addMedication() {
+      medCount++;
+      const medDiv = document.createElement('div');
+      medDiv.classList.add('medication-group');
+      medDiv.innerHTML = `
+        <h4>Medication ${medCount}</h4>
+        <label for="drug_${medCount}">Drug Name:</label>
+        <div class="autocomplete-container">
+          <input type="text" id="drug_${medCount}" name="drug[]" class="autocomplete-input" required autocomplete="off">
+          <div class="autocomplete-suggestions"></div>
+        </div>
+
+        <label for="dosage_${medCount}">Dosage:</label>
+        <input type="text" id="dosage_${medCount}" name="dosage[]" required>
+
+        <label for="frequency_${medCount}">Frequency:</label>
+        <input type="text" id="frequency_${medCount}" name="frequency[]" required>
+
+        <label for="duration_${medCount}">Duration:</label>
+        <input type="text" id="duration_${medCount}" name="duration[]" required>
+
+        <label>Before or After Food:</label>
+        <div class="radio-group">
+          <input type="radio" id="before_food_${medCount}" name="food_timing_${medCount}" value="before" required>
+          <label for="before_food_${medCount}">Before Food</label>
+          <input type="radio" id="after_food_${medCount}" name="food_timing_${medCount}" value="after">
+          <label for="after_food_${medCount}">After Food</label>
+        </div>
+      `;
+      document.getElementById('medications').appendChild(medDiv);
+
+      const newInput = medDiv.querySelector(".autocomplete-input");
+      const newSuggestionBox = medDiv.querySelector(".autocomplete-suggestions");
+      attachAutocomplete(newInput, newSuggestionBox);
+    }
+  </script>
+</body>
+</html>

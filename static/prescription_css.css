@@ -1,0 +1,142 @@
+/* General Body and Typography Styles */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa; /* Softer, neutral background */
+    margin: 0;
+    padding: 20px;
+    color: #343a40; /* Dark grey for better readability */
+    margin-bottom: 20px; /* Adds space at the bottom */
+}
+
+/* Centered Container for the Form */
+.container {
+    max-width: 800px;
+    margin: 40px auto; /* Centers the container and adds space from the top */
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 20px; /* Adds space at the bottom */
+}
+
+/* Heading Styles */
+h2, h4 {
+    color: #0057B8; /* Deep blue for major headings */
+    margin-bottom: 20px; /* Adds space at the bottom */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Floating Brand Badge */
+.brand-badge {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e7f5ff;
+    color: #0057B8;
+    font-weight: bold;
+    padding: 8px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    z-index: 1000;
+}
+
+/* Form Section and Element Styling */
+.form-section {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: #ffffff;
+    margin-bottom: 20px; /* Adds space at the bottom */
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #0057B8;
+    box-shadow: 0 0 0 3px rgba(0, 87, 184, 0.15); /* Soft glow on focus */
+    outline: none;
+    margin-bottom: 20px;
+}
+
+/* Medication Group Styling */
+.medication-group {
+    background-color: #f1f3f5;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+/* Modern Radio Button Styling */
+.radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.radio-group input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.radio-group label {
+    align-items: center;
+    padding: 12px 20px;
+    border: 2px solid #ced4da;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; 
+    font-weight: 500;
+    font-size: 1rem;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}
+
+.radio-group label:hover {
+    border-color: #0057B8;
+}
+
+.autocomplete-container {
+position: relative;
+}
+
+.autocomplete-suggestions {
+position: absolute;
+top: 100%;
+left: 0;
+right: 0;
+z-index: 1000;
+background: white;
+max-height: 150px;
+overflow-y: auto;
+}
+
+.suggestion-item {
+padding: 8px;
+cursor: pointer;
+}
+
+.suggestion-item:hover {
+background-color: #f0f0f0;
+}
